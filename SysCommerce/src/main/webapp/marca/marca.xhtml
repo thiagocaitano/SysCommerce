@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="titulo">| Lista de Marcas</ui:define>
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="marca.css" />
+	</ui:define>
+	<ui:define name="corpo">
+		<h:form>
+		
+    <p:growl autoUpdate="true"  />
+			<p:panel header="Lista de Marcas" style="border:0px;">
+
+
+				<p:dataTable widgetVar="datatable" id="table" styleClass="tabela" var="marca"
+					value="#{marcaBean.listaDeMarcas}" paginator="true" rows="6"
+					paginatorAlwaysVisible="true"
+					emptyMessage="Nenhuma marca cadastrada"
+					paginatorPosition="bottom">
+					
+					<f:facet name="header">
+					<p:outputLabel value="Nome :" />
+						<p:inputText placeholder="Digite o nome da marca"
+							value="#{marcaBean.pesq}" size="40" onkeyup="PF('datatable').filter()" />
+					
+					</f:facet>					
+					
+					<p:column width="10" headerText="Id"> #{marca.id} </p:column>
+					<p:column width="75" headerText="Nome"> #{marca.nome} </p:column>
+					<p:column width="15" headerText="Editar / Excluir">
+						<p:button outcome="altMarca"  icon="ui-icon-pencil" >
+							<f:param name="marcaId" value="#{marca.id}"/>
+						</p:button>
+						<p:commandButton icon="ui-icon-trash"
+							action="#{marcaBean.excluir(marca)}" update="table">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir essa marca ?" icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<br>
+				<p:commandButton styleClass="botao" value="Incluir Nova"
+					action="cadastroMarca?faces-redirect=true" icon="ui-icon-plusthick" />
+				<p:commandButton styleClass="botao" value="Imprimir Todas"
+					icon="ui-icon-print" />
+			
+			</br>
+</p:panel>
+<p:confirmDialog global="true">
+							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" />
+							<p:commandButton value="Não" styleClass="ui-confirmdialog-no" />
+						</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

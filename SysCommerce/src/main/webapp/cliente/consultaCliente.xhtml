@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<ui:define name="titulo">| Lista de Produtos</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+<ui:define name="corpo">
+<p:panel header="Lista de Clientes" style="border:0px;">
+
+<h:form>
+
+<p:commandButton value="Imprimir Todos" icon="ui-icon-print"/>
+<fieldset>
+<legend>Buscar Cliente</legend>
+<h:panelGrid columns="5">
+<p:outputLabel value="Buscar por :"/>
+<p:selectOneMenu>
+<f:selectItem itemValue="Id" itemLabel="Id"/>
+<f:selectItem itemValue="Nome" itemLabel="Nome"/>
+</p:selectOneMenu>
+<p:inputText size="70"/>
+</h:panelGrid>
+</fieldset>
+<br/>
+<p:dataTable var="cliente" value="#{clienteController.lista}" emptyMessage="Nenhum Cliente Cadastrado" style="height:250px;text-align:center;">
+<p:column width="2" headerText="Id">
+#{cliente.id}
+</p:column><p:column width="40" headerText="Nome">
+#{cliente.nome}
+</p:column><p:column width="10" headerText="CPF">
+#{cliente.cpf}
+</p:column><p:column width="10" headerText="RG">
+#{cliente.rg}
+</p:column><p:column width="5" headerText="Consultar">
+<p:commandButton icon="ui-icon-search" />
+</p:column></p:dataTable>
+<br/>
+
+</h:form>
+
+</p:panel>
+</ui:define>
+</ui:composition>

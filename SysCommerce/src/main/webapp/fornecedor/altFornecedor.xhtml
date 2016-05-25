@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui"
+xmlns:o="http://omnifaces.org/ui">
+<ui:define name="titulo">| Cadastro de Produtos</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+
+<ui:define name="corpo">
+
+<f:metadata>
+<o:viewParam name="fornId" value="#{fornecedorBean.fornecedor}" converter="fornecedorConverter"></o:viewParam>
+</f:metadata>
+
+<p:panel header="Cadastro de Fornecedores" style="border:0px;">
+<p:growl autoUpdate="true"/>
+<h:form>
+<p:tabView orientation="left">
+<p:tab title="Dados do Fornecedor">
+            
+<h:panelGrid columns="2">
+
+<p:outputLabel value="Id : "/> 
+<p:inputText size="5" disabled="true" value="#{fornecedorBean.fornecedor.id}"/>
+<p:outputLabel value="Razão Social : "/> 
+<p:inputText required="true" requiredMessage="Digite a razão social" size="40" value="#{fornecedorBean.fornecedor.razaoSocial}"/>
+<p:outputLabel value="Nome Fantasia : "/> 
+<p:inputText  required="true" requiredMessage="Digite o nome fantasia" size="40" value="#{fornecedorBean.fornecedor.nome}"/>
+<p:outputLabel value="CNPJ : "/> 
+<p:inputMask mask="999.999.99-9999-99" required="true" requiredMessage="Digite o CNPJ" size="20" value="#{fornecedorBean.fornecedor.cnpj}"/>
+</h:panelGrid>
+</p:tab>
+<p:tab title="Endereço">
+<h:panelGrid columns="2">
+<p:outputLabel value="Estado : "/>
+<p:inputText required="true" requiredMessage="Digite o estado" size="20"  value="#{fornecedorBean.fornecedor.endereco.estado}"/>
+<p:outputLabel value="Cidade : "/>
+<p:inputText required="true" requiredMessage="Digite a cidade" value="#{fornecedorBean.fornecedor.endereco.cidade}" size="20" />
+<p:outputLabel value="Bairro : "/>
+<p:inputText required="true" requiredMessage="Digite o bairro" value="#{fornecedorBean.fornecedor.endereco.bairro}" size="20" />
+<p:outputLabel value="CEP : "/>
+<p:inputMask required="true" requiredMessage="Digite o CEP" mask="99.999-999" size="10" value="#{fornecedorBean.fornecedor.endereco.cep}" />
+<p:outputLabel value="Logradouro : "/>
+<p:inputText required="true" requiredMessage="Digite o lagradouro" value="#{fornecedorBean.fornecedor.endereco.logradouro}" size="50" />
+<p:outputLabel value="Número : "/>
+<p:inputText required="true" requiredMessage="Digite o número" value="#{fornecedorBean.fornecedor.endereco.numero}" size="5" />
+<p:outputLabel value="Complemento : "/>
+<p:inputText size="40" value="#{fornecedorBean.fornecedor.endereco.complemento}" />
+</h:panelGrid>
+</p:tab>
+<p:tab title="Contato">
+<h:panelGrid columns="2">
+<p:outputLabel value="Telefone :"/>
+<p:inputMask mask="(99)9999-999" required="true" requiredMessage="Digite o telefone" 
+value="#{fornecedorBean.fornecedor.telefone1}" size="15"/>
+<p:outputLabel value="Telefone 2 :"/>
+<p:inputMask mask="(99)99999-9999" value="#{fornecedorBean.fornecedor.telefone2}" size="15"/>
+<p:outputLabel value="Celular :"/>
+<p:inputMask mask="(99)99999-9999" required="true" requiredMessage="Digite o celular" size="15"  value="#{fornecedorBean.fornecedor.celular}"/>
+<p:outputLabel value="Email :"/>
+<p:inputText size="20"  value="#{fornecedorBean.fornecedor.email}"/>
+<p:outputLabel value="Pessoa de contato :" />
+<p:inputText  required="true" requiredMessage="Digite o nome de uma pessoa de contato" size="20"  value="#{fornecedorBean.fornecedor.pessoaContato}"/>
+
+
+
+</h:panelGrid>
+
+
+</p:tab>
+
+
+
+
+</p:tabView>
+
+<p:commandButton process="@this" value="Cancelar" action="fornecedor?faces-redirect=true" icon="ui-icon-closethick"/>
+<p:commandButton value="Atualizar" icon="ui-icon-refresh" action="#{fornecedorBean.alterar()}"/>
+</h:form>
+ 
+
+</p:panel>
+</ui:define>
+</ui:composition>

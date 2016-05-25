@@ -1,0 +1,16 @@
+.ui-panel {
+	margin: 0px;
+}
+
+.ui-panel-title {
+	font-size: 20px;
+}
+
+.ui-datatable-tablewrapper {
+	height: 340px;
+}
+
+.ui-datatable-header {
+	text-align: right !important;
+	padding: 5px!important;
+}

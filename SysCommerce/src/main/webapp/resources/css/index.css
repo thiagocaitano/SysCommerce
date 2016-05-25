@@ -1,0 +1,58 @@
+*{
+	font-family: calibri;
+	margin:0 auto;
+	font-size: 14px;
+}
+
+body{
+	background-color: DodgerBlue;
+	width: 70%;
+	color:white;
+}
+
+
+#header{
+	height: 60px;
+	color: white;
+	font-size: 35px;
+	font-weight: bold;
+	padding-left:30px;
+	padding-top: 10px;
+}
+
+
+
+.ui-menuitem .ui-state-hover{
+	
+	background: DodgerBlue;
+	color:white;
+	transition:0.3s;
+	display: block;
+	border-radius:0px;
+	box-shadow:2px 2px 10px gray;
+	
+}
+
+.ui-menubar{
+	
+	background: white;
+	border-radius:0px;
+	border:transparent;
+}
+
+.ui-menuitem .ui-menu-list{
+	
+	background: white;
+	box-shadow:0px 0px 0px; 	
+}
+
+
+.ui-menuitem-text{
+	font-weight: bold;
+} 
+
+
+#corpo{
+    height: 520px;
+    background-color: white;
+}

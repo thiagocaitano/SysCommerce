@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui"
+xmlns:o="http://omnifaces.org/ui"
+>
+<ui:define name="titulo">| Cadastro de Produtos</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+
+<ui:define name="corpo">
+<f:metadata>
+    <o:viewParam name="cargoId" value="#{cargoBean.cargo}" converter="cargoConverter" />
+</f:metadata> 
+
+<p:panel header="Cadastro de Cargos" style="border:0px;">
+    
+    <p:growl autoUpdate="true"  />
+    
+    <h:form>
+        
+<fieldset>
+<legend>Incluir Cargo</legend>
+<h:panelGrid columns="2">
+    <p:outputLabel value="Id : "/>
+    <p:inputText disabled="true" size="4" value="#{cargoBean.cargo.id}"/>
+<p:outputLabel value="Nome : "/>
+<p:inputText  requiredMessage="Digite o nome do departamento" required="true" id="marca"  value="#{cargoBean.cargo.nome}"/>
+<p:outputLabel value="Departamento : "/>
+
+<p:selectOneMenu value="#{cargoBean.cargo.departamento}" converter="departamentoConverter">
+<f:selectItem itemLabel="Selecione"/>
+<f:selectItems value="#{cargoBean.listaDepartamento}" var="departamento" 
+itemLabel="#{departamento.nome}" itemValue="#{departamento}" />
+</p:selectOneMenu>
+
+    <p:commandButton process="@this" value="Cancelar" icon="ui-icon-close" action="cargo?faces-redirect=true"/>
+<p:commandButton value="Salvar"  icon="ui-icon-disk" action="#{cargoBean.alterar()}" />
+</h:panelGrid>
+
+</fieldset>
+ 
+</h:form>
+</p:panel>
+</ui:define>
+</ui:composition>

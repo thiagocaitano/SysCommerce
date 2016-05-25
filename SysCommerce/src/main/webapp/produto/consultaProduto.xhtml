@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<ui:define name="titulo">| Lista de Produtos</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+<ui:define name="corpo">
+<p:panel header="Consulta de Produtos" style="border:0px;">
+<h:form>
+
+<p:commandButton value="Imprimir Todos" icon="ui-icon-print"/>
+<fieldset >
+<legend>Buscar Produto</legend>
+<h:panelGrid columns="5" cellspacing="5">
+<p:outputLabel value="Buscar por :"/>
+<p:selectOneMenu effect="slide">
+<f:selectItem itemValue="Id" itemLabel="Id"></f:selectItem>
+<f:selectItem itemValue="Descricao" itemLabel="Descrição"></f:selectItem>
+</p:selectOneMenu>
+<p:inputText size="70" value="#{produtoController.pesq}">
+<f:ajax event="keyup" render="tabela"/>
+</p:inputText>
+</h:panelGrid>
+</fieldset>
+</h:form>
+
+<br/>
+<p:dataTable value="#{produtoController.listar()}" var="produto"
+				id="tabela" style="height:250px;text-align:center" paginator="true"
+				rows="6" paginatorAlwaysVisible="false"
+				emptyMessage="Nenhuma Produto cadastrada">
+<p:column width="2" headerText="Id">
+#{produto.id}
+</p:column>
+<p:column width="40" headerText="Descrição">
+#{produto.descricao}
+</p:column>
+<p:column width="10" headerText="Marca">
+#{produto.marca.nome}
+</p:column>
+<p:column width="5" headerText="Preço">
+#{produto.venda}
+</p:column>
+<p:column width="5" headerText="Estoque">
+#{produto.estoque}
+</p:column>
+<p:column width="5" headerText="Consultar">
+<p:commandButton icon="ui-icon-search"/>
+</p:column>
+</p:dataTable>
+
+</p:panel>
+</ui:define>
+</ui:composition>

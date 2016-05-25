@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<ui:define name="titulo">| Consulta de dados de Produtos</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+
+<ui:define name="corpo">
+<p:panel header="Cadastro de Clientes" style="border:0px;">
+<br/>
+<p:commandButton icon="ui-icon-print" value="Imprimir"/>
+<p:commandButton icon="ui-icon-close" value="Cancelar" action="#{clienteController.salvar()}"/>
+<br/>
+<h:form>
+<p:tabView>
+<p:tab title="Dados do Cliente">
+<p:growl autoUpdate="true" escape="false"/>
+<h:panelGrid columns="2">
+
+<p:outputLabel value="Id : "/>
+ <p:inputText size="5" disabled="true" value="#{clienteController.cliente.id}"/>
+ 
+<p:outputLabel value="Nome : "/>
+<p:inputText  required="true" requiredMessage="Digite o nome" size="40" value="#{clienteController.cliente.nome}"/>
+
+<p:outputLabel value="RG : "/> 
+<p:inputText  size="20" required="true" requiredMessage="Digite o RG" value="#{clienteController.cliente.rg}" />
+
+<p:outputLabel value="CPF : "/> 
+<p:inputMask required="true" requiredMessage="Digite o CPF" mask="999.999.999-99" size="20" value="#{clienteController.cliente.cpf}"/>
+
+<p:outputLabel value="Data de Nascimento: "/> 
+<p:inputMask required="true" requiredMessage="Digite a data de nascimento" mask="99/99/9999" size="10" value="#{clienteController.cliente.datanasc}"/>
+
+<p:outputLabel value="Sexo: " /> 
+<p:selectOneButton required="true" requiredMessage="Selecione o sexo" value="#{clienteController.cliente.sexo}">
+<f:selectItem itemLabel="Masculino" itemValue="MASCULINO"/>
+<f:selectItem itemLabel="Feminino" itemValue="FEMININO"/>
+</p:selectOneButton>
+
+<p:outputLabel value="Estado Civil: "/>
+<p:selectOneButton required="true" requiredMessage="Selecione o estado civil" value="#{clienteController.cliente.estadoCivil}">
+<f:selectItem itemLabel="Solteiro" itemValue="SOLTEIRO"/>
+<f:selectItem itemLabel="Casado" itemValue="CASADO"/>
+</p:selectOneButton>
+</h:panelGrid>
+</p:tab>
+<p:tab title="Endereço">
+<h:panelGrid columns="2">
+<p:outputLabel value="Estado : "/>
+<p:inputText required="true" requiredMessage="Digite o estado" size="20" value="#{clienteController.end.estado}"/>
+<p:outputLabel value="Cidade : "/>
+<p:inputText required="true" requiredMessage="Digite a cidade" size="20" value="#{clienteController.end.cidade}" />
+<p:outputLabel value="Bairro : "/>
+<p:inputText required="true" requiredMessage="Digite o bairro" size="20" value="#{clienteController.end.bairro}"/>
+<p:outputLabel value="CEP : "/>
+<p:inputMask required="true" requiredMessage="Digite o CEP" mask="99.999-999" size="10" value="#{clienteController.end.cep}"/>
+<p:outputLabel value="Logradouro : "/>
+<p:inputText required="true" requiredMessage="Digite o Logradouro" size="50" value="#{clienteController.end.logradouro}"/>
+<p:outputLabel value="Número : "/>
+<p:inputText required="true" requiredMessage="Digite o número" size="5" value="#{clienteController.end.numero}"/>
+<p:outputLabel value="Complemento : "/>
+<p:inputText size="40" value="#{clienteController.end.complemento}" />
+</h:panelGrid>
+</p:tab>
+<p:tab title="Contato">
+<h:panelGrid columns="2">
+<p:outputLabel value="Telefone :"/>
+<p:inputMask required="true" requiredMessage="Digite o telefone" mask="(99)9999-99999" size="15" value="#{clienteController.cliente.telefoene}"/>
+<p:outputLabel value="Telefone 2 :"/>
+<p:inputMask mask="(99)9999-99999" size="15" value="#{clienteController.cliente.telefone2}"/>
+<p:outputLabel value="Celular :"/>
+<p:inputMask required="true" requiredMessage="Digite o celular" mask="(99)9999-99999" size="15" value="#{clienteController.cliente.celular}"/>
+<p:outputLabel value="Email :"/>
+<p:inputMask mask="(99)9999-99999" size="20" value="#{clienteController.cliente.email}"/>
+</h:panelGrid>
+</p:tab>
+
+</p:tabView>
+
+ 
+<p:commandButton value="Atualizar Dados" icon="ui-icon-refresh" action="#{clienteController.salvar()}" />
+
+</h:form>
+</p:panel>
+</ui:define>
+</ui:composition>

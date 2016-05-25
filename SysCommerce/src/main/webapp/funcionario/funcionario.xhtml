@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="titulo">| Lista de Produtos</ui:define>
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="cadproduto.css" />
+		<h:outputStylesheet library="css" name="marca.css" />
+	</ui:define>
+	<ui:define name="corpo">
+		<p:panel header="Lista de Funcionários" style="border:0px;">
+
+			<h:form>
+				<p:dataTable widgetVar="datatable" id="tabela" var="func" value="#{funcionarioBean.listaDeFuncionarios}"
+					emptyMessage="Nenhum Cliente Cadastrado"
+					paginatorAlwaysVisible="true" paginatorPosition="bottom"
+					paginator="true" rows="6">
+					<f:facet name="header">
+											<p:outputLabel value="Nome :" />
+						<p:inputText size="40" placeholder="Digite o nome do funcionário"
+							value="#{funcionarioBean.pesq}" onkeyup="PF('datatable').filter()" />
+					</f:facet>
+
+					<p:column width="2" headerText="Id">#{func.id}</p:column>
+					<p:column width="40" headerText="Nome">#{func.nome}</p:column>
+					<p:column width="10" headerText="CPF">#{func.cpf}</p:column>
+					<p:column width="5" headerText="RG">#{func.rg}</p:column>
+					<p:column width="15" headerText="Departamento">#{func.cargo.departamento.nome}</p:column>
+					<p:column width="15" headerText="Cargo">#{func.cargo.nome}</p:column>
+					<p:column width="10" headerText="Editar / Excluir">
+						<p:button icon="ui-icon-pencil" outcome="altFuncionario">
+						<f:param value="#{func.id}" name="funcionarioId"></f:param>
+						</p:button>
+						<p:commandButton icon="ui-icon-trash"
+							action="#{funcionarioBean.excluir(func)}" update="tabela">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o funcionário ?" icon="ui-icon-alert" />
+						</p:commandButton>
+
+
+						<p:confirmDialog global="true">
+							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" />
+							<p:commandButton value="Não" styleClass="ui-confirmdialog-no" />
+						</p:confirmDialog>
+					</p:column>
+				</p:dataTable>
+				<br />
+				
+				<p:commandButton value="Incluir Novo"
+					action="cadastroFuncionario?faces-redirect=true"
+					icon="ui-icon-plusthick" />
+
+				<p:commandButton value="Imprimir Todos" icon="ui-icon-print" />
+
+			</h:form>
+
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<ui:define name="titulo">| Lista de Produtos</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+<ui:define name="corpo">
+<p:panel header="Lista de Fornecedores" style="border:0px;">
+
+<h:form>
+
+<p:commandButton value="Imprimir Todos" icon="ui-icon-print"/>
+
+<fieldset >
+<legend>Buscar Fornecedor</legend>
+<h:panelGrid columns="5">
+<p:outputLabel value="Buscar por :"/>
+<p:selectOneMenu>
+<f:selectItem itemLabel="Id" itemValue="Id"/>
+<f:selectItem itemLabel="Descrição" itemValue="Descrição"/>
+</p:selectOneMenu>
+<p:inputText size="70"/>
+</h:panelGrid>
+</fieldset>
+</h:form>
+<br/>
+<p:dataTable var="forn" value="#{fornecedorController.lista}" style="height:280px;text-align:center" emptyMessage="Nenhum fornecedor cadastrado">
+<p:column width="2" headerText="Id">
+#{forn.id}
+</p:column>
+<p:column width="45" headerText="Razão Social">
+#{forn.razaoSocial}
+</p:column>
+<p:column  width="35" headerText="Nome Fantasia">
+#{forn.nome}
+</p:column>
+<p:column width="10" headerText="CNPJ">
+#{forn.cpf}
+</p:column>
+<p:column width="2" headerText="Consultar">
+<p:commandButton icon="ui-icon-search" />
+</p:column>
+</p:dataTable>
+
+<br/>
+
+</p:panel>
+</ui:define>
+</ui:composition>

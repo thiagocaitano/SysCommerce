@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<ui:define name="titulo">| Lista de Marcas</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="entrada.css"/></ui:define>
+<ui:define name="corpo">
+<p:panel header="Registro de Entrada de Produtos" style="border:0px;">
+<fieldset>
+<LEGEND>Selecionar Fornecedor</LEGEND>
+<h:panelGrid columns="4">
+<p:outputLabel value="Fornecedor :" />
+<p:inputText size="5" widgetVar="fornecedor"/>
+<p:inputText size="45" readonly="true" widgetVar="nomeFornecedor"/>
+<p:commandButton icon="ui-icon-search" onclick="PF('dlgforn').show()"/>
+<p:outputLabel/>
+</h:panelGrid>
+</fieldset>
+
+<br/>
+<p:panelGrid>
+<p:row>
+<p:column>
+
+<h:panelGrid cellspacing="5" columns="4">
+<p:outputLabel value="Produto:"/> 
+<p:inputText widgetVar="inpprod"  size="4" disabled="true" />
+ <p:commandButton widgetVar="butprod" disabled="true" icon="ui-icon-search" onclick="PF('dlgprod').show()"/>
+<p:outputLabel/>
+
+
+<p:outputLabel value="Preço:"/> <p:inputText size="4" disabled="true" widgetVar="inppreco" />
+<p:outputLabel value="Quantidade:"/> <p:inputText size="4" disabled="true" widgetVar="inpquant" />
+
+
+<p:outputLabel value="Desconto:"/> <p:inputText size="4" disabled="true" widgetVar="inpdesc"  />
+<p:outputLabel value="Total"/> <p:inputText size="4" disabled="true"  widgetVar="inptotal"  />
+<p:commandButton value="Adicionar" widgetVar="butadicionar" icon="ui-icon-plus" disabled="true" 
+onclick="PF('inpprod').enable();PF('butprod').enable();PF('inppreco').disable();PF('inpquant').disable();PF('inpdesc').disable();PF('butadicionar').disable();PF('butcancelar').disable();"/>
+
+<p:commandButton value="Cancelar" widgetVar="butcancelar" icon="ui-icon-close" disabled="true" 
+onclick="PF('inpprod').enable();PF('butprod').enable();PF('inppreco').disable();PF('inpquant').disable();PF('inpdesc').disable();PF('butadicionar').disable();PF('butcancelar').disable();"/>
+</h:panelGrid>
+</p:column>
+<p:column>
+
+<p:dataTable scrollable="true" scrollHeight="150" style="height:200px;" emptyMessage="Nenhum Produto adicionado">
+<p:column>
+<f:facet name="header">Produto</f:facet>
+</p:column>
+
+<p:column>
+<f:facet name="header">Preço</f:facet>
+</p:column>
+<p:column>
+<f:facet name="header">Quantidade</f:facet>
+</p:column>
+<p:column>
+<f:facet name="header">Desconto</f:facet>
+</p:column>
+<p:column>
+<f:facet name="header">Total</f:facet>
+</p:column>
+<p:column>
+<f:facet name="header">Excluir</f:facet>
+</p:column>
+</p:dataTable>
+</p:column>
+</p:row>
+</p:panelGrid>
+<br/>
+<fieldset>
+<LEGEND>Valores Totais</LEGEND>
+<p:panelGrid columns="4" style="text-align:center;">
+<p:outputLabel styleClass="totais" value="ITENS"/>
+
+<p:outputLabel styleClass="totais" value="VALOR"/>
+
+<p:outputLabel styleClass="totais" value="DESCONTO"/>
+
+<p:outputLabel styleClass="totais" value="TOTAL"/>
+<p:outputLabel styleClass="totais" value="0"/>
+
+<p:outputLabel styleClass="totais" value="0,00"/>
+
+<p:outputLabel styleClass="totais" value="0,00"/>
+
+<p:outputLabel styleClass="totais" value="0,00"/>
+</p:panelGrid>
+</fieldset>
+<br/>
+<p:commandButton value="Confirmar" icon="ui-icon-check" onclick="PF('dlgconfirmar').show();"/>
+<p:commandButton value="Cancelar Entrada" icon="ui-icon-close" action="index?faces-redirect=true"/>
+
+</p:panel>
+
+
+<p:dialog draggable="false" modal="true" width="800" height="300" resizable="false" showEffect="clip" hideEffect="clip" header="Buscar Fornecedor" widgetVar="dlgforn">
+
+<h:panelGrid columns="5">
+<p:outputLabel value="Razão Social : "/> <p:inputText size="30"/> 
+<p:outputLabel value="CNPJ : "/> <p:inputText size="15"/>
+<p:commandButton value="Buscar" icon="ui-icon-search"/>
+</h:panelGrid>
+<br/>
+<p:dataTable emptyMessage="Nenhum fornecedor cadastrado" style="height:200px;">
+<p:column width="1">
+<f:facet name="header">Id</f:facet>
+</p:column>
+
+<p:column width="50">
+<f:facet name="header">Razão Social</f:facet>
+</p:column>
+
+<p:column width="35">
+<f:facet name="header">Nome Fantasia</f:facet>
+</p:column>
+
+<p:column width="14">
+<f:facet name="header">CNPJ</f:facet>
+
+</p:column>
+
+<p:column width="5">
+<f:facet name="header">Selecionar</f:facet>
+
+</p:column>
+
+</p:dataTable>
+<br/>
+<p:commandButton type="button" value="Cancelar" icon="ui-icon-close" onclick="PF('dlgforn').hide();PF('fornecedor').disable();PF('inpprod').enable();PF('butprod').enable();" />
+
+</p:dialog>
+
+<p:dialog draggable="false" modal="true" width="800" height="300" resizable="false" showEffect="clip" hideEffect="clip" header="Dialog" widgetVar="dlgprod">
+
+<h:panelGrid columns="5">
+<p:outputLabel value="Descrição : "/> <p:inputText size="30"/> 
+<p:commandButton value="Buscar" icon="ui-icon-search"/>
+</h:panelGrid>
+<br/>
+<p:dataTable emptyMessage="Nenhum produto cadastrado" style="height:200px;">
+<p:column width="1">
+<f:facet name="header">Id</f:facet>
+</p:column>
+
+<p:column width="50">
+<f:facet name="header">Descrição</f:facet>
+</p:column>
+<p:column width="35">
+<f:facet name="header">Marca</f:facet>
+</p:column>
+<p:column width="15">
+<f:facet name="header">Estoque</f:facet>
+</p:column>
+
+<p:column width="14">
+<f:facet name="header">Preço de Custo</f:facet>
+
+</p:column>
+
+<p:column width="5">
+<f:facet name="header">Selecionar</f:facet>
+
+</p:column>
+
+</p:dataTable>
+<br/>
+
+<p:commandButton value="Cancelar" icon="ui-icon-close" type="button" 
+onclick="PF('dlgprod').hide();PF('inppreco').enable();PF('inpquant').enable();PF('inpdesc').enable();PF('butadicionar').enable();PF('butcancelar').enable();PF('inpprod').disable();PF('butprod').disable();" />
+
+</p:dialog>
+<p:dialog widgetVar="dlgconfirmar" showEffect="clip" hideEffect="clip" draggable="false" height="350" width="500">
+<p:commandButton value="Confirmar" icon="ui-icon-check" onclick="PF('dlgconfirmar').hide();"/>
+<p:commandButton value="Cancelar" icon="ui-icon-close" onclick="PF('dlgconfirmar').hide();"/>
+</p:dialog>
+</ui:define>
+</ui:composition>

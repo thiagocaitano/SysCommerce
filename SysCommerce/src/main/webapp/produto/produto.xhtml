@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="titulo">| Lista de Produtos</ui:define>
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="marca.css" />
+	</ui:define>
+	<ui:define name="corpo">
+		<p:panel header="Lista de Produtos" style="border:0px;">
+
+
+			<p:dataTable widgetVar="datatable" value="#{produtoBean.listaDeProdutos}"
+				var="produto" id="tabela" paginatorPosition="bottom"
+				paginator="true" rows="6" emptyMessage="Nenhum Produto Cadastrado">
+				<f:facet name="header">
+					<p:outputLabel value="Descrição :" />
+					<p:inputText size="40" placeholder="Digite a descrição do produto"
+						value="#{produtoBean.pesq}" onkeyup="PF('datatable').filter()" />
+
+				</f:facet>
+				<p:column width="2" headerText="Id">#{produto.id}</p:column>
+				<p:column width="40" headerText="Descrição">#{produto.descricao}</p:column>
+				<p:column width="10" headerText="Marca">#{produto.marca.nome}</p:column>
+				<p:column width="5" headerText="Preço">#{produto.precoVenda}</p:column>
+				<p:column width="5" headerText="Estoque">#{produto.quantidadeEstoque}</p:column>
+				<p:column width="5" headerText="Editar">
+					<p:button icon="ui-icon-pencil" outcome="altProduto">
+						<f:param name="produtoId" value="#{produto.id}" />
+					</p:button>
+
+					<p:commandButton icon="ui-icon-trash" update="tabela"
+						action="#{produtoBean.excluir(produto)}">
+						<p:confirm header="Confirmação"
+							message="Deseja excluir esse produto?" icon="ui-icon-alert" />
+
+					</p:commandButton>
+
+					<p:confirmDialog global="true">
+						<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" />
+						<p:commandButton value="Não" styleClass="ui-confirmdialog-no" />
+					</p:confirmDialog>
+				</p:column>
+			</p:dataTable>
+			<br>
+			<p:commandButton value="Incluir Novo"
+				action="cadastroProduto?faces-redirect=true"
+				icon="ui-icon-plusthick" />
+			<p:commandButton value="Imprimir" action="#{produtoBean.imprimirTodos()}" icon="ui-icon-print" />
+			</br>
+		</p:panel>
+	</ui:define>
+</ui:composition>

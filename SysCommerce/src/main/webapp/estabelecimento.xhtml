@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<ui:define name="titulo">| Cadastro de Estabelecimento</ui:define>
+<ui:define name="css"><h:outputStylesheet library="css" name="cadproduto.css"/></ui:define>
+
+<ui:define name="corpo">
+<p:panel header="Cadastro de Estabelecimento" style="border:0px;">
+<p:tabView orientation="left">
+<p:tab title="Dados do Estabelecimento">
+            
+<h:panelGrid columns="2">
+
+<p:outputLabel value="Id : "/> <p:inputText size="5" disabled="true"/>
+<p:outputLabel value="Razão Social : "/> <p:inputText size="40"/>
+<p:outputLabel value="Nome Fantasia : "/> <p:inputText size="40" />
+<p:outputLabel value="CNPJ : "/> <p:inputText size="20"/>
+</h:panelGrid>
+</p:tab>
+<p:tab title="Endereço">
+<h:panelGrid columns="2">
+<p:outputLabel value="Estado : "/>
+<p:autoComplete size="20" />
+<p:outputLabel value="Cidade : "/>
+<p:autoComplete size="20" />
+<p:outputLabel value="Bairro : "/>
+<p:autoComplete size="20" />
+<p:outputLabel value="CEP : "/>
+<p:autoComplete size="6" />
+<p:outputLabel value="Logradouro : "/>
+<p:autoComplete size="50" />
+<p:outputLabel value="Número : "/>
+<p:autoComplete size="5" />
+<p:outputLabel value="Complemento : "/>
+<p:autoComplete size="40" />
+</h:panelGrid>
+</p:tab>
+<p:tab title="Contato">
+<h:panelGrid columns="2">
+<p:outputLabel value="Telefone :"/>
+<p:inputText size="15"/>
+<p:outputLabel value="Telefone 2 :"/>
+<p:inputText size="15"/>
+<p:outputLabel value="Celular :"/>
+<p:inputText size="15"/>
+<p:outputLabel value="Email :"/>
+<p:inputText size="20"/>
+
+
+
+</h:panelGrid>
+
+</p:tab>
+
+
+
+
+</p:tabView>
+ 
+<p:commandButton value="Salvar" icon="ui-icon-disk"/>
+<p:commandButton value="Cancelar" action="index?faces-redirect=true" icon="ui-icon-closethick"/>
+
+</p:panel>
+</ui:define>
+</ui:composition>

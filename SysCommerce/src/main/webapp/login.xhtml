@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+<title>Aplicativo Comercial | Login</title>
+<h:outputStylesheet library="css" name="login.css"/>
+</h:head> 
+<body> 
+
+<p:panel header="Login" style="width:25%;position:relative;top:200px;box-shadow:0px 2px 10px black;">
+<center>
+<p:graphicImage styleClass="img" library="img" name="login.jpg"/>
+<br/>
+<h:form>
+<h:panelGrid columns="2" cellpadding="5">
+<p:outputLabel value="Login :"/> <p:inputText placeholder="Digite o login"/>
+<p:outputLabel value="Senha :"/> <p:inputText placeholder="Digite a senha"/>
+<p:commandButton icon="ui-icon-check" action="index?faces-redirect=true" value="Entrar"/>
+
+</h:panelGrid>
+</h:form>
+</center>
+</p:panel>
+
+</body> 
+</html>
