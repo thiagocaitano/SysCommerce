@@ -1,8 +1,10 @@
 package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -15,16 +17,14 @@ import org.primefaces.model.DualListModel;
 import com.caitanosoftwares.entity.Fornecedor;
 import com.caitanosoftwares.entity.Marca;
 import com.caitanosoftwares.entity.Produto;
+import com.caitanosoftwares.exception.ServiceException;
+import com.caitanosoftwares.reports.ReportUtil;
 import com.caitanosoftwares.service.FornecedorService;
 import com.caitanosoftwares.service.MarcaService;
 import com.caitanosoftwares.service.ProdutoService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Named
@@ -43,22 +43,19 @@ public class ProdutoBean implements Serializable {
 	private FornecedorService fornecedorService;
 
 	private List<Produto> listaDeProdutos;
+	
+	private List<Produto> listaDeProdutosFiltrados;
 
 	private List<Marca> listaDeMarcas;
 
 	private DualListModel<Fornecedor> dualListTodosFornecedores;
-
-	private String pesq = "";
 
 	private Produto produto = new Produto();
 
 	@PostConstruct
 	public void init(){
 		listaDeMarcas = marcaService.obterTodos();
-	}
-
-	private List<Produto> preencherLista() {
-		return listaDeProdutos = produtoService.obterTodos();
+		listaDeProdutos = produtoService.obterProdutosComFornecedores();
 	}
 
 	public Produto getProduto() {
@@ -88,40 +85,41 @@ public class ProdutoBean implements Serializable {
 	}
 
 	public List<Produto> getListaDeProdutos() {
-
-		preencherLista();
-		return listaDeProdutos.stream().filter(produto -> {
-			return produto.getDescricao().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return listaDeProdutos;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Produto> getListaDeProdutosFiltrados() {
+		return listaDeProdutosFiltrados;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeProdutosFiltrados(List<Produto> listaDeProdutosFiltrados) {
+		this.listaDeProdutosFiltrados = listaDeProdutosFiltrados;
 	}
 
-	public String adicionar() {
+	public void novoProduto(){
+		produto = new Produto();
+	}
+	
+	public void salvar() {
 		produtoService.salvar(produto);
-		produto = new Produto();
-		return "produto.xhtml?faces-redirect=true";
+		listaDeProdutos=produtoService.obterProdutosComFornecedores();
+		MessagesUtil.addInfoMessage("Produto salvo com sucesso.");
 	}
 
-	public void excluir(Produto produto) {
-		produtoService.excluir(produto);
-		listaDeProdutos.clear();
+	public void excluir() {
+			try {
+				produtoService.excluir(produto);
+				listaDeProdutos=produtoService.obterProdutosComFornecedores();
+				MessagesUtil.addInfoMessage("Produto excluído com sucesso.");
+			} catch (ServiceException e) {
+				MessagesUtil.addErrorMessage(e.getMessage());
+			} catch (Exception e) {
+				MessagesUtil.addErrorMessage("Erro ao excluir produto.");
+			}
 	}
-
-	public String alterar() {
-		produtoService.alterar(produto);
-		produto = new Produto();
-		return "produto.xhtml?faces-redirect=true";
-	}
-	 
-	public void onTransfer(TransferEvent event) {
 		
+
+	public void onTransfer(TransferEvent event) {
 		produto.setListaDeFornecedores(dualListTodosFornecedores.getTarget());
 	 }
 	
@@ -139,10 +137,8 @@ public class ProdutoBean implements Serializable {
 	}
 	
 	public void imprimirTodos() throws JRException{
-	/*	JasperReport report = JasperCompileManager.compileReport("reports/produto.jrxml");		
-		JasperPrint print = JasperFillManager.fillReport(report, null,new JRBeanCollectionDataSource(listaDeProdutos));	
-		JasperExportManager.exportReportToPdfFile(print,"C:/Users/Thiago Caitano/Documents");
-		*/
+		Map<String, Object> parametros= new HashMap<>();
+		ReportUtil.executarRelatorio("/WEB-INF/reports/produto.jasper", parametros, "lista de produtos", new JRBeanCollectionDataSource(listaDeProdutos));
 	}
 	
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:panel styleClass="painel-cadastro-departamento"
+	header="Cadastro de Departamentos" style="border:0px;">
+
+	<fieldset>
+		<legend>Incluir Departamento</legend>
+		<h:panelGrid columns="2">
+			<p:outputLabel value="Id : " />
+			<p:inputText disabled="true" size="4"
+				value="#{departamentoBean.departamento.id}" />
+			<p:outputLabel value="Nome : " />
+			<p:inputText rendered="true"
+				requiredMessage="Digite o nome do departamento" required="true"
+				id="marca" value="#{departamentoBean.departamento.nome}" />
+
+			<p:outputLabel />
+			<p:commandButton value="Salvar" action="#{departamentoBean.salvar()}"
+				icon="ui-icon-disk" update="tabela-departamentos"
+				oncomplete="PF('dialogCadastro').hide()"
+				process="@(.painel-cadastro-departamento)" />
+
+		</h:panelGrid>
+
+	</fieldset>
+
+</p:panel>
+</html>

@@ -2,7 +2,6 @@ package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -11,8 +10,10 @@ import javax.inject.Named;
 
 import com.caitanosoftwares.entity.Cargo;
 import com.caitanosoftwares.entity.Departamento;
+import com.caitanosoftwares.exception.ServiceException;
 import com.caitanosoftwares.service.CargoService;
 import com.caitanosoftwares.service.DepartamentoService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 @Named
 @ViewScoped
@@ -30,7 +31,7 @@ public class CargoBean implements Serializable {
 
 	private List<Departamento> listaDeDepartamentos;
 
-	private String pesq = "";
+	private List<Departamento> listaDeDepartamentosFiltrados;
 
 	private Cargo cargo = new Cargo();
 	
@@ -38,11 +39,7 @@ public class CargoBean implements Serializable {
 	public void init(){
 		
 		listaDeDepartamentos = departamentoService.obterTodos();
-	}
-
-
-	private List<Cargo> preencherLista() {
-		return listaDeCargos = cargoService.obterTodos();
+		listaDeCargos = cargoService.obterTodos();
 	}
 
 	public Cargo getCargo() {
@@ -55,39 +52,40 @@ public class CargoBean implements Serializable {
 
 	public List<Cargo> getListaDeCargos() {
 
-		preencherLista();
-		return listaDeCargos.stream().filter(cargo -> {
-			return cargo.getNome().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return listaDeCargos;
 	}
-	
+		
 	public List<Departamento> getListaDepartamento(){
 		return listaDeDepartamentos;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Departamento> getListaDeDepartamentosFiltrados() {
+		return listaDeDepartamentosFiltrados;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeDepartamentosFiltrados(List<Departamento> listaDeDepartamentosFiltrados) {
+		this.listaDeDepartamentosFiltrados = listaDeDepartamentosFiltrados;
 	}
 
-	public String adicionar() {
+	public void novoCargo(){
+		cargo = new Cargo();	
+	}
+	
+	public void salvar() {
 		cargoService.salvar(cargo);
-		cargo = new Cargo();
-		return "cargo.xhtml?faces-redirect=true";
+		listaDeCargos=cargoService.obterTodos();
+		MessagesUtil.addInfoMessage("Cargo salvo com sucesso.");
 	}
 
-	public void excluir(Cargo Cargo) {
-		cargoService.excluir(Cargo);
-		listaDeCargos.clear();
+	public void excluir() {
+		try {
+			cargoService.excluir(cargo);
+			listaDeCargos=cargoService.obterTodos();
+			MessagesUtil.addInfoMessage("Cargo excluído com sucesso.");
+		} catch (ServiceException e) {
+			MessagesUtil.addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			MessagesUtil.addErrorMessage("Erro ao excluir cargo.");
+		}
 	}
-
-	public String alterar() {
-		cargoService.alterar(cargo);
-		cargo = new Cargo();
-		return "cargo.xhtml?faces-redirect=true";
-	}
-
 }

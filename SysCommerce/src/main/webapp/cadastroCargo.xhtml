@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:panel header="Cadastro de Cargos" styleClass="painel-cadastro-cargo"
+	style="border:0px;">
+
+	<fieldset>
+		<legend>Incluir Cargo</legend>
+		<h:panelGrid columns="2">
+			<p:outputLabel value="Id : " />
+			<p:inputText disabled="true" size="4" value="#{cargoBean.cargo.id}" />
+			<p:outputLabel value="Nome : " />
+			<p:inputText requiredMessage="Digite o nome do cargo" required="true"
+				id="marca" value="#{cargoBean.cargo.nome}" />
+			<p:outputLabel value="Departamento : " />
+
+			<p:selectOneMenu value="#{cargoBean.cargo.departamento}"
+				required="true" converter="departamentoConverter">
+				<f:selectItem itemLabel="Selecione" itemValue="#{null}" />
+				<f:selectItems value="#{cargoBean.listaDepartamento}"
+					var="departamento" itemLabel="#{departamento.nome}"
+					itemValue="#{departamento}" />
+			</p:selectOneMenu>
+
+			<p:outputLabel />
+			<p:commandButton value="Salvar" icon="ui-icon-disk"
+				action="#{cargoBean.salvar()}"
+				oncomplete="PF('dialogCadastro').hide();"
+				process="@(.painel-cadastro-cargo)" update="tabela-cargos" />
+
+		</h:panelGrid>
+
+	</fieldset>
+
+</p:panel>
+</html>

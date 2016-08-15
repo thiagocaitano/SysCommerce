@@ -2,7 +2,6 @@ package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -10,10 +9,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.caitanosoftwares.entity.Cargo;
-import com.caitanosoftwares.entity.Endereco;
 import com.caitanosoftwares.entity.Funcionario;
+import com.caitanosoftwares.exception.ServiceException;
 import com.caitanosoftwares.service.CargoService;
 import com.caitanosoftwares.service.FuncionarioService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 @Named
 @ViewScoped
@@ -29,19 +29,16 @@ public class FuncionarioBean implements Serializable {
 
 	private List<Funcionario> listaDeFuncionarios;
 
+	private List<Funcionario> listaDeFuncionariosFiltrados;
+
 	private List<Cargo> listaDeCargos;
 
-	private String pesq = "";
-
-	private Funcionario funcionario = new Funcionario(new Endereco(),new Cargo());
+	private Funcionario funcionario = new Funcionario();
 
 	@PostConstruct
 	public void init(){
 		listaDeCargos= cargoService.obterTodos();
-	}
-
-	private List<Funcionario> preencherLista() {
-		return listaDeFuncionarios = funcionarioService.obterTodos();
+		listaDeFuncionarios = funcionarioService.obterTodos();
 	}
 
 	public Funcionario getFuncionario() {
@@ -57,36 +54,37 @@ public class FuncionarioBean implements Serializable {
 	}
 	
 	public List<Funcionario> getListaDeFuncionarios() {
-
-		preencherLista();
-		return listaDeFuncionarios.stream().filter(funcionario -> {
-			return funcionario.getNome().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return listaDeFuncionarios;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Funcionario> getListaDeFuncionariosFiltrados() {
+		return listaDeFuncionariosFiltrados;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeFuncionariosFiltrados(List<Funcionario> listaDeFuncionariosFiltrados) {
+		this.listaDeFuncionariosFiltrados = listaDeFuncionariosFiltrados;
 	}
 
-	public String adicionar() {
-		funcionarioService.salvar(funcionario);
+	public void novoFuncionario(){
 		funcionario = new Funcionario();
-		return "funcionario.xhtml?faces-redirect=true";
+	}
+	
+	public void salvar() {
+		funcionarioService.salvar(funcionario);
+		listaDeFuncionarios = funcionarioService.obterTodos();
+		MessagesUtil.addInfoMessage("Funcionário salvo com sucesso.");
 	}
 
 	public void excluir(Funcionario funcionario) {
-		funcionarioService.excluir(funcionario);
-		listaDeFuncionarios.clear();
-	}
-
-	public String alterar() {
-		funcionarioService.alterar(funcionario);
-		funcionario = new Funcionario();
-		return "funcionario.xhtml?faces-redirect=true";
+		try {
+			funcionarioService.excluir(funcionario);
+			listaDeFuncionarios = funcionarioService.obterTodos();
+			MessagesUtil.addInfoMessage("Funcionário excluído com sucesso.");
+		} catch (ServiceException e) {
+			MessagesUtil.addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			MessagesUtil.addErrorMessage("Erro ao excluir funcionário.");
+		}
 	}
 
 }

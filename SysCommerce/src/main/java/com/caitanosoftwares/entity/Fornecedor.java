@@ -1,10 +1,13 @@
 package com.caitanosoftwares.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -42,12 +45,12 @@ public class Fornecedor {
 
 	@Column(name = "pessoa_contato")
 	private String pessoaContato;
+	
+	@ManyToMany(mappedBy="listaDeFornecedores")
+	private List<Produto> listaDeProdutosFornecidos;
 
 	public Fornecedor() {
-	}
-
-	public Fornecedor(Endereco endereco) {
-		this.endereco = endereco;
+		endereco = new Endereco();
 	}
 
 	public Long getId() {
@@ -128,6 +131,14 @@ public class Fornecedor {
 
 	public void setPessoaContato(String pessoaContato) {
 		this.pessoaContato = pessoaContato;
+	}
+
+	public List<Produto> getListaDeProdutosFornecidos() {
+		return listaDeProdutosFornecidos;
+	}
+
+	public void setListaDeProdutosFornecidos(List<Produto> listaDeProdutosFornecidos) {
+		this.listaDeProdutosFornecidos = listaDeProdutosFornecidos;
 	}
 
 	@Override

@@ -2,14 +2,16 @@ package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.caitanosoftwares.entity.Departamento;
+import com.caitanosoftwares.exception.ServiceException;
 import com.caitanosoftwares.service.DepartamentoService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 @Named
 @ViewScoped
@@ -22,13 +24,13 @@ public class DepartamentoBean implements Serializable {
 
 	private List<Departamento> listaDeDepartamentos;
 
-	private String pesq = "";
+	private List<Departamento> listaDeDepartamentosFiltrados;
 
 	private Departamento departamento = new Departamento();
 
-
-	private List<Departamento> preencherLista() {
-		return listaDeDepartamentos = departamentoService.obterTodos();
+	@PostConstruct
+	private void init() {
+		listaDeDepartamentos = departamentoService.obterTodos();
 	}
 
 	public Departamento getDepartamento() {
@@ -40,36 +42,37 @@ public class DepartamentoBean implements Serializable {
 	}
 
 	public List<Departamento> getListaDeDepartamentos() {
-
-		preencherLista();
-		return listaDeDepartamentos.stream().filter(departamento -> {
-			return departamento.getNome().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return listaDeDepartamentos;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Departamento> getListaDeDepartamentosFiltrados() {
+		return listaDeDepartamentosFiltrados;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeDepartamentosFiltrados(List<Departamento> listaDeDepartamentosFiltrados) {
+		this.listaDeDepartamentosFiltrados = listaDeDepartamentosFiltrados;
 	}
 
-	public String adicionar() {
+	public void novoDepartamento(){
+		departamento = new Departamento();
+	}
+	
+	public void salvar() {
 		departamentoService.salvar(departamento);
-		departamento = new Departamento();
-		return "departamento.xhtml?faces-redirect=true";
+		listaDeDepartamentos=departamentoService.obterTodos();
+		MessagesUtil.addInfoMessage("Departamento salvo com sucesso");
 	}
 
-	public void excluir(Departamento Departamento) {
-		departamentoService.excluir(Departamento);
-		listaDeDepartamentos.clear();
-	}
-
-	public String alterar() {
-		departamentoService.alterar(departamento);
-		departamento = new Departamento();
-		return "departamento.xhtml?faces-redirect=true";
+	public void excluir() {
+		try {
+			departamentoService.excluir(departamento);
+			listaDeDepartamentos=departamentoService.obterTodos();
+			MessagesUtil.addInfoMessage("Departamento excluído com sucesso.");
+		} catch (ServiceException e) {
+			MessagesUtil.addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			MessagesUtil.addErrorMessage("Erro ao salvar departamento.");
+		}
 	}
 
 }

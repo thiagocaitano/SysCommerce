@@ -1,82 +1,89 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head><title>Aplicativo Comercial <ui:insert name="titulo">| Início</ui:insert></title>
+<h:head>
+	<title>Aplicativo Comercial <ui:insert name="titulo">| Início</ui:insert></title>
 
-<h:outputStylesheet library="css" name="index.css"/>
-<ui:insert name="css">
-</ui:insert>
+	<h:outputStylesheet library="css" name="geral.css" />
+	<h:outputStylesheet library="css" name="index.css" />
+	<ui:insert name="css">
+	</ui:insert>
 
-</h:head> 
-<body> 
+</h:head>
+<body>
 
-<div id="header">
+	<div id="header">Aplicação Comercial</div>
 
-Aplicação Comercial
-</div>
-
-		<h:form>
+	<h:form>
 		<p:menubar>
-		
-            <p:menuitem value="Inicio" icon="ui-icon-home" action="index?faces-redirect=true"/>
-        <p:submenu label="Cadastros" icon="ui-icon-disk">
-        <p:submenu label="Estoque">
-            <p:menuitem value="Marca" action="marca/marca?faces-redirect=true"/>
-            <p:menuitem value="Produto" action="produto/produto?faces-redirect=true"/>
-                </p:submenu>
-                
- 		<p:menuitem value="Fornecedor" action="fornecedor/fornecedor?faces-redirect=true"/>
- 		<p:separator/>
-                <p:menuitem value="Cliente" action="cliente/cliente?faces-redirect=true"/>
- 		<p:separator/>
- 		<p:submenu label="Empresa">
- 		<p:menuitem value="Departamento" action="departamento/departamento?faces-redirect=true"/>
- 		<p:menuitem value="Cargo" action="cargo/cargo?faces-redirect=true"/>
- 		<p:menuitem value="Funcionário" action="funcionario/funcionario?faces-redirect=true"/>
- 		</p:submenu>
- 		<p:menuitem value="Usuário"/>
- 		<p:separator/>
- 		<p:menuitem value="Estabelecimento" action="estabelecimento?faces-redirect=true"/>
- 		
- 		</p:submenu>
- 		<p:submenu label="Movimentações"  icon="ui-icon-transferthick-e-w">
- 		<p:menuitem value="Entrada de Produtos" action="entrada?faces-redirect=true"/>
- 		<p:menuitem value="Venda" action="venda?faces-redirect=true"/>
- 		</p:submenu>
- 		<p:submenu label="Consultas" icon="ui-icon-search">
- 		<p:submenu label="Movimentações">
- 		<p:menuitem value="Venda"/>
- 		<p:menuitem value="Entrada de Produtos"/>
- 		</p:submenu>
- 		<p:menuitem value="Produtos" action="consultaProduto?faces-redirect=true"/>
- 		<p:menuitem value="Fornecedores" action="consultaFornecedor?faces-redirect=true"/>
- 		<p:separator/>
- 		<p:menuitem value="Clientes" action="consultaCliente?faces-redirect=true"/>
- 		<p:separator/>
- 		<p:menuitem value="Funcionários" action="consultaFuncionario?faces-redirect=true"/>
- 		</p:submenu>
- 		<p:submenu label="Relatórios" icon="ui-icon-document">
- 		
- 		</p:submenu>
- 		<p:submenu label="Opções" icon="ui-icon-gear">
- 		<p:menuitem value="Alterar Senha"/>
- 		<p:menuitem value="Alterar Usuário"/>
- 		<p:menuitem value="Sair" action="login?faces-redirect=true"/>
- 		
- 		</p:submenu>
-        </p:menubar>
-        </h:form>
-    <div id="corpo">
-        <ui:insert name="corpo">Corpo</ui:insert>
-        
-        </div>
-        <p:separator/>
-        <div id="footer">
-        Caitano Softwares - Soluções e Sistemas 
-		</div>
-</body> 
+
+			<p:menuitem value="Inicio" icon="ui-icon-home"
+				action="index?faces-redirect=true" />
+			<p:submenu label="Cadastros" icon="ui-icon-disk">
+				<p:submenu label="Estoque">
+					<p:menuitem value="Marca" action="marca?faces-redirect=true" />
+					<p:menuitem value="Produto" action="produto?faces-redirect=true" />
+				</p:submenu>
+
+				<p:menuitem value="Fornecedor"
+					action="fornecedor?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Cliente" action="cliente?faces-redirect=true" />
+				<p:separator />
+				<p:submenu label="Empresa">
+					<p:menuitem value="Departamento"
+						action="departamento?faces-redirect=true" />
+					<p:menuitem value="Cargo" action="cargo?faces-redirect=true" />
+					<p:menuitem value="Funcionário"
+						action="funcionario?faces-redirect=true" />
+				</p:submenu>
+				<p:menuitem value="Usuário" />
+				<p:separator />
+				<p:menuitem value="Estabelecimento"
+					action="estabelecimento?faces-redirect=true" />
+
+			</p:submenu>
+			<p:submenu label="Movimentações" icon="ui-icon-transferthick-e-w">
+				<p:menuitem value="Entrada de Produtos"
+					action="entrada?faces-redirect=true" />
+				<p:menuitem value="Venda" action="venda?faces-redirect=true" />
+			</p:submenu>
+			<p:submenu label="Consultas" icon="ui-icon-search">
+				<p:submenu label="Movimentações">
+					<p:menuitem value="Venda" />
+					<p:menuitem value="Entrada de Produtos" />
+				</p:submenu>
+				<p:menuitem value="Produtos"
+					action="consultaProduto?faces-redirect=true" />
+				<p:menuitem value="Fornecedores"
+					action="consultaFornecedor?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Clientes"
+					action="consultaCliente?faces-redirect=true" />
+				<p:separator />
+				<p:menuitem value="Funcionários"
+					action="consultaFuncionario?faces-redirect=true" />
+			</p:submenu>
+			<p:submenu label="Relatórios" icon="ui-icon-document">
+
+			</p:submenu>
+			<p:submenu label="Opções" icon="ui-icon-gear">
+				<p:menuitem value="Alterar Senha" />
+				<p:menuitem value="Alterar Usuário" />
+				<p:menuitem value="Sair" action="login?faces-redirect=true" />
+
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+	<div id="corpo">
+		<ui:insert name="corpo">Corpo</ui:insert>
+
+	</div>
+	<p:separator />
+	<div id="footer">Caitano Softwares - Soluções e Sistemas</div>
+</body>
 </html>

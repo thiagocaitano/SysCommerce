@@ -65,14 +65,10 @@ public class Funcionario {
 	private double salario;
 
 	public Funcionario(){
-
+		cargo = new Cargo();
+		endereco = new Endereco();
 	}
 
-	public Funcionario(Endereco endereco,Cargo cargo){
-		this.endereco = endereco;
-		this.cargo=cargo;
-	}
-	
 	public Long getId() {
 		return id;
 	}

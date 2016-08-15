@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.caitanosoftwares.dao.interfaces.Dao;
+import com.caitanosoftwares.exception.ServiceException;
 
 public class ServiceAbstract<T, ID> implements Service<T, ID>,Serializable {
 
@@ -19,7 +20,7 @@ public class ServiceAbstract<T, ID> implements Service<T, ID>,Serializable {
 		dao.save(c);
 	}
 
-	public void excluir(T c) {
+	public void excluir(T c) throws ServiceException {
 		dao.remove(c);
 	}
 

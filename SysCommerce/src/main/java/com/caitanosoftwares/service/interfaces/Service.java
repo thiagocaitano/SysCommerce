@@ -6,7 +6,7 @@ public interface Service<T, ID> {
 
 	public void salvar(T c);
 
-	public void excluir(T c);
+	public void excluir(T c) throws Exception;
 
 	public void alterar(T c);
 

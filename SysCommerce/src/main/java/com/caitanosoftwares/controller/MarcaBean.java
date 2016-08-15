@@ -2,14 +2,16 @@ package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.caitanosoftwares.entity.Marca;
+import com.caitanosoftwares.exception.ServiceException;
 import com.caitanosoftwares.service.MarcaService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 @Named
 @ViewScoped
@@ -22,13 +24,13 @@ public class MarcaBean implements Serializable {
 
 	private List<Marca> listaDeMarcas;
 
-	private String pesq = "";
+	private List<Marca> listaDeMarcasFiltradas;
 
 	private Marca marca = new Marca();
 
-
-	private List<Marca> preencherLista() {
-		return listaDeMarcas = marcaService.obterTodos();
+	@PostConstruct
+	private void init() {
+		listaDeMarcas=marcaService.obterTodos();
 	}
 
 	public Marca getMarca() {
@@ -41,35 +43,34 @@ public class MarcaBean implements Serializable {
 
 	public List<Marca> getListaDeMarcas() {
 
-		preencherLista();
-		return listaDeMarcas.stream().filter(marca -> {
-			return marca.getNome().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return this.listaDeMarcas;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Marca> getListaDeMarcasFiltradas() {
+		return listaDeMarcasFiltradas;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeMarcasFiltradas(List<Marca> listaDeMarcasFiltradas) {
+		this.listaDeMarcasFiltradas = listaDeMarcasFiltradas;
+	}
+	
+	public void novaMarca(){
+		marca = new Marca();
 	}
 
-	public String adicionar() {
+	public void salvar() {
 		marcaService.salvar(marca);
-		marca = new Marca();
-		return "marca.xhtml?faces-redirect=true";
+		listaDeMarcas=marcaService.obterTodos();
+		MessagesUtil.addInfoMessage("Marca salva com sucesso!");
 	}
 
-	public void excluir(Marca marca) {
-		marcaService.excluir(marca);
-		listaDeMarcas.clear();
+	public void excluir() {
+		try {
+			marcaService.excluir(marca);
+			listaDeMarcas=marcaService.obterTodos();
+			MessagesUtil.addInfoMessage("Marca excluída com sucesso!");
+		} catch (Exception e) {
+			MessagesUtil.addInfoMessage("Erro ao excluir produto");
+		}
 	}
-
-	public String alterar() {
-		marcaService.alterar(marca);
-		marca = new Marca();
-		return "marca.xhtml?faces-redirect=true";
-	}
-
 }

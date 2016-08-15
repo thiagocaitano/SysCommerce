@@ -10,4 +10,8 @@ public interface FornecedorDao extends Dao<Fornecedor, Long> {
 
 	public List<Fornecedor> obterFornecedoresQueNaoEstaoNaLista(List<Fornecedor> fornecedores);
 
+	public List<Fornecedor> obterFornecedoresPorRazaoOuCnpj(String razao, String cnpj);
+
+	public Fornecedor obterFornecedorComProdutos(Fornecedor fornecedor);
+
 }

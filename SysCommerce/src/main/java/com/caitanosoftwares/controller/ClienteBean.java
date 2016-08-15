@@ -2,15 +2,16 @@ package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.caitanosoftwares.entity.Cliente;
-import com.caitanosoftwares.entity.Endereco;
+import com.caitanosoftwares.exception.ServiceException;
 import com.caitanosoftwares.service.ClienteService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 @Named
 @ViewScoped
@@ -21,15 +22,16 @@ public class ClienteBean implements Serializable {
 	@Inject
 	private ClienteService clienteService;
 
-	private List<Cliente> listaDeClientees;
+	private List<Cliente> listaDeClientes;
 
-	private String pesq = "";
+	private List<Cliente> listaDeClientesFiltrados;
 
-	private Cliente cliente = new Cliente(new Endereco());
+	private Cliente cliente = new Cliente();
 
-
-	private List<Cliente> preencherLista() {
-		return listaDeClientees = clienteService.obterTodos();
+	@PostConstruct
+	private void init() {
+		
+		listaDeClientes = clienteService.obterTodos();
 	}
 
 	public Cliente getCliente() {
@@ -41,36 +43,37 @@ public class ClienteBean implements Serializable {
 	}
 
 	public List<Cliente> getListaDeClientes() {
-
-		preencherLista();
-		return listaDeClientees.stream().filter(cliente -> {
-			return cliente.getNome().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return listaDeClientes;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Cliente> getListaDeClientesFiltrados() {
+		return listaDeClientesFiltrados;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeClientesFiltrados(List<Cliente> listaDeClientesFiltrados) {
+		this.listaDeClientesFiltrados = listaDeClientesFiltrados;
 	}
-
-	public String adicionar() {
-		clienteService.salvar(cliente);
+	
+	public void novoCliente(){
 		cliente = new Cliente();
-		return "cliente.xhtml?faces-redirect=true";
+	}
+
+	public void salvar() {
+		clienteService.salvar(cliente);
+		listaDeClientes= clienteService.obterTodos();
+		MessagesUtil.addInfoMessage("Cliente cadastrado com sucesso.");
 	}
 
 	public void excluir(Cliente Cliente) {
-		clienteService.excluir(Cliente);
-		listaDeClientees.clear();
-	}
-
-	public String alterar() {
-		clienteService.alterar(cliente);
-		cliente = new Cliente();
-		return "cliente.xhtml?faces-redirect=true";
+		try {
+			clienteService.excluir(Cliente);
+			listaDeClientes= clienteService.obterTodos();
+			MessagesUtil.addErrorMessage("Cliente excluído com sucesso.");
+		} catch (ServiceException e) {
+			MessagesUtil.addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			MessagesUtil.addErrorMessage("Erro ao excluir cliente.");
+		}
 	}
 
 }

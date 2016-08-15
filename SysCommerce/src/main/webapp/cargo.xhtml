@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<ui:composition template="/index.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="titulo">| Lista de Produtos</ui:define>
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="cadproduto.css" />
+		<h:outputStylesheet library="css" name="marca.css" />
+	</ui:define>
+	<ui:define name="corpo">
+		<h:form>
+
+			<p:growl autoUpdate="true" />
+			<p:panel header="Lista de Cargo" style="border:0px;">
+
+				<p:dataTable widgetVar="tabela-cargos" id="tabela-cargos"
+					value="#{cargoBean.listaDeCargos}" var="cargo"
+					paginatorPosition="bottom" paginator="true" rows="6"
+					emptyMessage="Nenhum Cargo Cadastrado"
+					filteredValue="#{cargoBean.listaDeDepartamentosFiltrados}">
+
+					<f:facet name="header">
+						<p:inputText placeholder="Pesquisar" id="globalFilter"
+							styleClass="input-filtro-datatable"
+							onkeyup="PF('tabela-cargos').filter()" />
+					</f:facet>
+
+					<p:column width="2" headerText="Id" filterBy="#{cargo.id}"
+						filterStyleClass="filtro-datatable"> 
+#{cargo.id} 
+</p:column>
+					<p:column width="40" headerText="Nome" filterBy="#{cargo.nome}"
+						filterStyleClass="filtro-datatable">
+ #{cargo.nome} 
+ </p:column>
+					<p:column width="40" headerText="Departamento"
+						filterBy="#{cargo.departamento.nome}"
+						filterStyleClass="filtro-datatable"> 
+#{cargo.departamento.nome} 
+</p:column>
+					<p:column width="5" headerText="Editar / Excluir">
+						<p:commandButton icon="ui-icon-pencil"
+							update="@(.painel-cadastro-cargo)" process="@this"
+							oncomplete="PF('dialogCadastro').show()">
+							<f:setPropertyActionListener value="#{cargo}"
+								target="#{cargoBean.cargo}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash" process="@this"
+							action="#{cargoBean.excluir()}" update="tabela-cargos">
+
+							<f:setPropertyActionListener value="#{cargo}"
+								target="#{cargoBean.cargo}" />
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o cargo ?" icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:commandButton value="Incluir Novo" icon="ui-icon-plusthick"
+					action="#{cargoBean.novoCargo}" process="@this"
+					oncomplete="PF('dialogCadastro').show()"
+					update="@(.painel-cadastro-cargo)" />
+
+				<p:commandButton value="Imprimir" process="@none"
+					icon="ui-icon-print" />
+			</p:panel>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes" />
+				<p:commandButton value="Não" styleClass="ui-confirmdialog-no" />
+			</p:confirmDialog>
+
+
+			<p:dialog widgetVar="dialogCadastro" id="dialog-cadastro"
+				modal="true" draggable="false" width="800" height="400"
+				resizable="false">
+				<ui:include src="cadastroCargo.xhtml" />
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

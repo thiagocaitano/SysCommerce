@@ -2,15 +2,16 @@ package com.caitanosoftwares.controller;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.caitanosoftwares.entity.Endereco;
 import com.caitanosoftwares.entity.Fornecedor;
+import com.caitanosoftwares.exception.ServiceException;
 import com.caitanosoftwares.service.FornecedorService;
+import com.caitanosoftwares.util.jsf.MessagesUtil;
 
 @Named
 @ViewScoped
@@ -22,14 +23,14 @@ public class FornecedorBean implements Serializable {
 	private FornecedorService fornecedorService;
 
 	private List<Fornecedor> listaDeFornecedores;
+	
+	private List<Fornecedor> listaDeFornecedoresFiltrados;
 
-	private String pesq = "";
+	private Fornecedor fornecedor = new Fornecedor();
 
-	private Fornecedor fornecedor = new Fornecedor(new Endereco());
-
-
-	private List<Fornecedor> preencherLista() {
-		return listaDeFornecedores = fornecedorService.obterTodos();
+	@PostConstruct
+	private void init() {
+		listaDeFornecedores = fornecedorService.obterTodos();
 	}
 
 	public Fornecedor getFornecedor() {
@@ -41,36 +42,37 @@ public class FornecedorBean implements Serializable {
 	}
 
 	public List<Fornecedor> getListaDeFornecedors() {
-
-		preencherLista();
-		return listaDeFornecedores.stream().filter(fornecedor -> {
-			return fornecedor.getNome().toLowerCase().contains(pesq.toLowerCase());
-		}).collect(Collectors.toList());
+		return listaDeFornecedores;
 	}
 
-	public String getPesq() {
-		return pesq;
+	public List<Fornecedor> getListaDeFornecedoresFiltrados() {
+		return listaDeFornecedoresFiltrados;
 	}
 
-	public void setPesq(String pesq) {
-		this.pesq = pesq;
+	public void setListaDeFornecedoresFiltrados(List<Fornecedor> listaDeFornecedoresFiltrados) {
+		this.listaDeFornecedoresFiltrados = listaDeFornecedoresFiltrados;
 	}
 
-	public String adicionar() {
+	public void novoFornecedor(){
+		fornecedor = new Fornecedor();
+	}
+	
+	public void salvar() {
 		fornecedorService.salvar(fornecedor);
-		fornecedor = new Fornecedor();
-		return "fornecedor.xhtml?faces-redirect=true";
+		listaDeFornecedores = fornecedorService.obterTodos();
+		MessagesUtil.addInfoMessage("Fornecedor salvo com sucesso.");
 	}
 
-	public void excluir(Fornecedor Fornecedor) {
-		fornecedorService.excluir(Fornecedor);
-		listaDeFornecedores.clear();
-	}
-
-	public String alterar() {
-		fornecedorService.alterar(fornecedor);
-		fornecedor = new Fornecedor();
-		return "fornecedor.xhtml?faces-redirect=true";
+	public void excluir() {
+		try {
+			fornecedorService.excluir(fornecedor);
+			listaDeFornecedores = fornecedorService.obterTodos();
+			MessagesUtil.addInfoMessage("Fornecedor excluído com sucesso.");
+		} catch (ServiceException e) {
+			MessagesUtil.addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			MessagesUtil.addErrorMessage("Erro ao excluir o fornecedor.");
+		}
 	}
 
 }

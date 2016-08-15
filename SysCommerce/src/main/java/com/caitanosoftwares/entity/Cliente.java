@@ -55,6 +55,7 @@ public class Cliente {
 	private EstadoCivil estadoCivil;
 	
 	public Cliente() {
+		endereco = new Endereco();
 	}
 
 	public Cliente(Endereco endereco) {
